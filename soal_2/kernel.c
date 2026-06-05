@@ -51,11 +51,14 @@ void readString(char *buf) {
     char c;
     while (1) {
         c = getChar();
-        if (c == '\r' || c == '\n') {
+        
+        // Deteksi tombol Enter (carriage return atau newline)
+        if (c == 0x0D || c == 0x0A || c == '\r' || c == '\n') {
             buf[i] = '\0';
             break;
         }
-        else if (c == '\b') {
+        // Deteksi Backspace
+        else if (c == 0x08 || c == '\b') {
             if (i > 0) {
                 i = i - 1;
                 cursor = cursor - 2;
@@ -63,9 +66,11 @@ void readString(char *buf) {
                 cursor = cursor - 2;
             }
         }
-        else {
+        // Deteksi karakter biasa (hanya jika printable)
+        else if (c >= 32 && c <= 126) {
             if (i < 63) {
                 buf[i] = c;
+                printChar(c); // Langsung munculkan di layar saat diketik
                 i = i + 1;
             }
         }
